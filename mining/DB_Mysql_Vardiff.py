@@ -58,7 +58,7 @@ class DB_Mysql_Vardiff(DB_Mysql.DB_Mysql):
                 }
             )
 
-            self.dbh.commit()
+        self.dbh.commit()
     
     def found_block(self, data):
         # for database compatibility we are converting our_worker to Y/N format
