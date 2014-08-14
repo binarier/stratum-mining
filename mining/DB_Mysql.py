@@ -99,7 +99,7 @@ class DB_Mysql():
                 }
             )
 
-            self.dbh.commit()
+        self.dbh.commit()
 
 
     def found_block(self, data):
