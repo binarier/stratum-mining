@@ -22,7 +22,7 @@ class BitcoinRPC(object):
             'Authorization': 'Basic %s' % self.credentials,
         }
         client.HTTPClientFactory.noisy = False
-	self.has_submitblock = False        
+	self.has_submitblock = True
 
     def _call_raw(self, data):
         client.Headers
@@ -69,13 +69,13 @@ class BitcoinRPC(object):
             attempts += 1
             if self.has_submitblock == True:
                 try:
-                    log.debug("Submitting Block with submitblock: attempt #"+str(attempts))
+                    log.info("Submitting Block with submitblock: attempt #"+str(attempts))
                     log.debug([block_hex,])
                     resp = (yield self._call('submitblock', [block_hex,]))
                     log.debug("SUBMITBLOCK RESULT: %s", resp)
                     break
                 except Exception as e:
-                    if attempts > 4:
+                    if attempts > 10:
                         log.exception("submitblock failed. Problem Submitting block %s" % str(e))
                         log.exception("Try Enabling TX Messages in config.py!")
                         raise
@@ -83,12 +83,13 @@ class BitcoinRPC(object):
                         continue
             elif self.has_submitblock == False:
                 try:
-                    log.debug("Submitting Block with getblocktemplate submit: attempt #"+str(attempts))
+                    log.info("Submitting Block with getblocktemplate submit: attempt #"+str(attempts))
                     log.debug([block_hex,])
                     resp = (yield self._call('getblocktemplate', [{'mode': 'submit', 'data': block_hex}]))
+                    log.info("submit getblocktemplate RESULT: %s", resp)
                     break
                 except Exception as e:
-                    if attempts > 4:
+                    if attempts > 10:
                         log.exception("getblocktemplate submit failed. Problem Submitting block %s" % str(e))
                         log.exception("Try Enabling TX Messages in config.py!")
                         raise

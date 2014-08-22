@@ -165,10 +165,10 @@ class TemplateRegistry(object):
         try:
             j = self.jobs[job_id]
         except:
-            log.info("Job id '%s' not found, worker_name: '%s'" % (job_id, worker_name))
+            log.debug("Job id '%s' not found, worker_name: '%s'" % (job_id, worker_name))
 
             if ip:
-                log.info("Worker submited invalid Job id: IP %s", str(ip))
+                log.debug("Worker submited invalid Job id: IP %s", str(ip))
 
             return None
         
