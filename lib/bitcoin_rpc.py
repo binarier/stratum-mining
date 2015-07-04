@@ -7,6 +7,7 @@ import base64
 from twisted.internet import defer
 from twisted.web import client
 import time
+import util
 
 import lib.logger
 log = lib.logger.get_logger('bitcoin_rpc')
@@ -142,9 +143,10 @@ class BitcoinRPC(object):
                                                   
     @defer.inlineCallbacks
     def prevhash(self):
-        resp = (yield self._call('getwork', []))
+#        resp = (yield self._call('getwork', []))
+	resp = (yield self._call('getblocktemplate', [{}]))
         try:
-            defer.returnValue(json.loads(resp)['result']['data'][8:72])
+            defer.returnValue(util.reverse_hash(json.loads(resp)['result']['previousblockhash']))
         except Exception as e:
             log.exception("Cannot decode prevhash %s" % str(e))
             raise
