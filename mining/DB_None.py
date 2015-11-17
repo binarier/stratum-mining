@@ -54,3 +54,7 @@ class DB_None():
 
     def close(self):
         log.debug("Close Connection")
+
+    def update_worker_diff(self,username,diff):
+        log.debug("update_worker_diff")
+
